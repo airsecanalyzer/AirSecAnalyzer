@@ -112,7 +112,7 @@ To extend the functionality of this tool using GNU Radio, users can develop thei
 - **Description**: This is a GNU Radio Python script designed to receive signals from SDR and automatically identify their protocol and modulation scheme. It identifies the signal's protocol type, determining whether it requires DVB-S2 or CCSDS decoding. It also demodulates the signal based on the identified modulation scheme, supporting BPSK, QPSK, and 8-PSK. Then it sends demodulated data via TCP to an higher-level application.
 
 - **Usage**: 
-- ```bash
+  ```bash
   python3 demodulation_decoding.py 
   ```
   
