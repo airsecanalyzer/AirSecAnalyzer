@@ -60,7 +60,7 @@ conda install -c conda-forge gnuradio
 AirSecAnalyzer has multiple modes, each associated with a specific script and function. Below are usage examples for each mode.
 
 ### SignalReplay
-Controls signal recording via `recording.py` and playback via `playback.py`. The upper-level application can send TCP commands to start or stop recording.
+Controls signal recording via `recording.py` and playback via `playback.py`. The higher-level application can send TCP commands to start or stop recording.
 
 - Start signal replay: `python3 SatTest.py --mode SignalReplay --recordTime 60`
 
@@ -70,6 +70,8 @@ Fuzzes signals with random and heuristic methods. The fuzzed signals are sent to
 
 - Random fuzzing: `python3 SatTest.py --mode SignalFuzzing --fuzzing random`
 - Heuristic fuzzing: `python3 SatTest.py --mode SignalFuzzing --fuzzing heuristic`
+
+Note: If you want to modify the heuristic fuzzing method, you can modify the heuristic_fuzz function in SatTest.py.
 
 ### SignalJamming
 Configures and transmits jamming signals. Users can set frequency, power, and bandwidth.
@@ -83,9 +85,9 @@ Uses GPS-SDR-SIM to generate and send false GNSS signals.
 
 ## Components
 AirSecAnalyzer comprises several scripts, each with its own function:
-- **SatTest.py**: Upper-level control for managing different modes and operations.
+- **SatTest.py**: higher-level control for managing different modes and operations.
 - **Modulation_coding.py**: Modulates and encodes signals based on TCP-received data.
-- **Demodulation_decoding.py**: Demodulates and decodes signals from PlutoSDR.
+- **Demodulation_decoding.py**: Demodulates and decodes signals from SDR.
 - **SignalGeneration.py**: Generates and sends signals based on received parameters.
 - **Recording.py**: Records signals based on TCP control commands.
 - **Playback.py**: Plays back recorded signals based on TCP control commands.
@@ -93,5 +95,52 @@ AirSecAnalyzer comprises several scripts, each with its own function:
 ## Contributing
 Contributions to AirSecAnalyzer are welcome. Please follow the project's coding standards and ensure compatibility with GNU Radio and corresponding SDR.
 
+### Extending Functionality with GNU Radio
+
+To extend the functionality of this tool using GNU Radio, users can develop their own higher-level control program to interact with the scripts in the GNURadio folder. Here are the descriptions and usage instructions for each script in the GNURadio folder:
+
+#### Modulation_coding.py
+
+- **Description**: Modulates and encodes signals based on TCP-received data.
+- **Usage**: Use command-line arguments to choose the encoding and modulation method. The default TCP port is `127.0.0.1:4567`
+  ```bash
+  python3 modulation_coding.py --encoding DVB-S2 --modulation QPSK
+  ```
+  
+#### Demodulation_decoding.py
+
+- **Description**: This is a GNU Radio Python script designed to receive signals from SDR and automatically identify their protocol and modulation scheme. It identifies the signal's protocol type, determining whether it requires DVB-S2 or CCSDS decoding. It also demodulates the signal based on the identified modulation scheme, supporting BPSK, QPSK, and 8-PSK. Then it sends demodulated data via TCP to an higher-level application.
+
+- **Usage**: 
+- ```bash
+  python3 demodulation_decoding.py 
+  ```
+  
+#### Recording.py
+
+- **Description**: It allows an higher-level application to control signal recording via TCP commands. It receives a control signals "START" or "STOP" from the higher-level application to start or stop recording.
+- **Usage**: The default TCP port is `127.0.0.1:5678`
+  ```bash
+  python3 Recording.py 
+  ```
+
+#### Playback.py
+
+- **Description**: It plays a local signal file based on TCP control signals from an higher-level application and sends the signal via SDR. It receives a control signals "START" or "STOP" from the higher-level application to start or stop playback.
+- **Usage**: The default TCP port is `127.0.0.1:5678`
+  ```bash
+  python3 Playback.py 
+  ```
+  
+#### SignalGeneration.py
+
+- **Description**: It generates signals based on parameters such as frequency, power and bandwidth received from an higher-level application via TCP and sending them through SDR.
+- **Usage**: The default TCP port is `127.0.0.1:6789`.
+
+  ```bash
+  python3 SignalGeneration.py 
+  ```
+ 
+
 ## License
-This project is licensed under the MIT License. For more information, see the LICENSE file.
+This project is licensed under the GUN License. For more information, see the LICENSE file.
