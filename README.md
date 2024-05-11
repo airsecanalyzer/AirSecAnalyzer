@@ -19,7 +19,7 @@ AirSecAnalyzer allows users to perform the following signal-related operations, 
 - **SignalReplay**: Record and replay signals.
 - **SignalFuzzing**: Fuzz signals with random and heuristic methods.
 - **SignalJamming**: Configure and transmit jamming signals.
-- **GNSS Attacking**: Generate and send false GNSS signals.
+- **GNSS Attack**: Generate and send false GNSS signals.
 
 
 ## Installation
